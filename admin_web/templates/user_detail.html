@@ -1,0 +1,386 @@
+{% extends "base.html" %}
+
+{% block title %}{{ user.full_name or user.username }} - Профиль{% endblock %}
+
+{% block header %}Профиль пользователя{% endblock %}
+
+{% block extra_css %}
+<style>
+    .info-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .info-row {
+        display: flex;
+        margin-bottom: 10px;
+        padding: 10px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 600;
+        width: 150px;
+        color: #555;
+    }
+    
+    .info-value {
+        flex: 1;
+    }
+    
+    .banned-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        background: #dc3545;
+        color: white;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .active-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        background: #28a745;
+        color: white;
+        border-radius: 3px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+    
+    .total-sum {
+        font-size: 24px;
+        font-weight: bold;
+        color: #28a745;
+        margin-top: 20px;
+        text-align: right;
+        padding: 15px;
+        background: #e8f5e9;
+        border-radius: 5px;
+    }
+    
+    .section-title {
+        margin: 30px 0 20px 0;
+        color: #333;
+        font-size: 20px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+    }
+    
+    .car-card {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .car-card h4 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .car-card .default-badge {
+        background: #ffc107;
+        color: #333;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+    
+    .car-details {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+    }
+    
+    .car-detail-item {
+        color: #666;
+    }
+    
+    .car-detail-item strong {
+        color: #333;
+        display: block;
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+    
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    .appointments-table th {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .appointments-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .appointments-table tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .status-pending {
+        color: #ffc107;
+        font-weight: bold;
+    }
+    
+    .status-confirmed {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .status-completed {
+        color: #17a2b8;
+        font-weight: bold;
+    }
+    
+    .status-cancelled {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin: 20px 0;
+    }
+    
+    .action-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    .btn-ban {
+        background: #dc3545;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-unban {
+        background: #28a745;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .btn-ban:hover, .btn-unban:hover {
+        opacity: 0.8;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="info-card">
+    <h2 style="margin-top: 0; margin-bottom: 20px;">Основная информация</h2>
+    
+    <div class="info-row">
+        <div class="info-label">Telegram ID:</div>
+        <div class="info-value">{{ user.user_id }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Username:</div>
+        <div class="info-value">@{{ user.username or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Имя:</div>
+        <div class="info-value">{{ user.full_name or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Телефон:</div>
+        <div class="info-value">{{ user.phone or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Email:</div>
+        <div class="info-value">{{ user.email or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Адрес:</div>
+        <div class="info-value">{{ user.address or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Дата рождения:</div>
+        <div class="info-value">{{ user.birth_date | date if user.birth_date else '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Заметки:</div>
+        <div class="info-value">{{ user.notes or '—' }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Дата регистрации:</div>
+        <div class="info-value">{{ user.registered_at | datetime }}</div>
+    </div>
+    
+    <div class="info-row">
+        <div class="info-label">Статус:</div>
+        <div class="info-value">
+            {% if user.is_banned %}
+                <span class="banned-badge">ЗАБАНЕН</span>
+            {% else %}
+                <span class="active-badge">АКТИВЕН</span>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{{ url_for('user_edit', user_id=user.user_id) }}" class="btn btn-primary">✏️ Редактировать профиль</a>
+        {% if user.is_banned %}
+            <a href="{{ url_for('unban_user_route', user_id=user.user_id) }}" class="btn-unban">✓ Разбанить</a>
+        {% else %}
+            <a href="{{ url_for('ban_user_route', user_id=user.user_id) }}" class="btn-ban">✗ Забанить</a>
+        {% endif %}
+    </div>
+</div>
+
+<h2 class="section-title">Автомобили</h2>
+
+{% if cars %}
+    {% for car in cars %}
+    <div class="car-card">
+        <h4>
+            {{ car.brand or 'Марка не указана' }} {{ car.model or '' }}
+            {% if car.is_default %}
+                <span class="default-badge">По умолчанию</span>
+            {% endif %}
+        </h4>
+        <div class="car-details">
+            {% if car.year %}
+            <div class="car-detail-item">
+                <strong>Год выпуска</strong>
+                {{ car.year }}
+            </div>
+            {% endif %}
+            
+            <div class="car-detail-item">
+                <strong>Тип</strong>
+                {{ car.vehicle_type }}
+            </div>
+            
+            {% if car.tire_width and car.tire_profile and car.tire_diameter %}
+            <div class="car-detail-item">
+                <strong>Размер шин</strong>
+                {{ car.tire_width }}/{{ car.tire_profile }} R{{ car.tire_diameter }}
+            </div>
+            {% endif %}
+            
+            {% if car.tire_season %}
+            <div class="car-detail-item">
+                <strong>Сезонность</strong>
+                {% if car.tire_season == 'summer' %}☀️ Лето
+                {% elif car.tire_season == 'winter' %}❄️ Зима
+                {% elif car.tire_season == 'all-season' %}🍂 Всесезон
+                {% else %}{{ car.tire_season }}
+                {% endif %}
+            </div>
+            {% endif %}
+            
+            {% if car.vin %}
+            <div class="car-detail-item">
+                <strong>VIN</strong>
+                {{ car.vin }}
+            </div>
+            {% endif %}
+        </div>
+        <div style="margin-top: 10px;">
+            <a href="{{ url_for('car_edit', car_id=car.id) }}" class="btn btn-primary btn-sm">✏️ Редактировать</a>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="empty-state">
+        <p>У пользователя нет сохранённых автомобилей.</p>
+    </div>
+{% endif %}
+
+<h2 class="section-title">История записей</h2>
+
+{% if appointments %}
+<table class="appointments-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+            <th>Авто</th>
+            <th>Радиус</th>
+            <th>Кол-во шин</th>
+            <th>Дата и время</th>
+            <th>Статус</th>
+            <th>Причина отмены</th>
+            <th>История статусов</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in appointments %}
+        <tr>
+            <td>{{ app.id }}</td>
+            <td>{{ app.service_name }}</td>
+            <td>{{ app.final_price }} руб.</td>
+            <td>{{ app.vehicle_type or '—' }}</td>
+            <td>{{ app.tire_diameter or '—' }}"</td>
+            <td>{{ app.quantity or '4' }}</td>
+            <td>{{ app.appointment_time | datetime }}</td>
+            <td class="status-{{ app.status }}">{{ app.status }}</td>
+            <td>{{ app.cancel_reason or '—' }}</td>
+            <td>
+                {% if app.status_history %}
+                    {% for entry in app.status_history %}
+                        {{ entry.status }} ({{ entry.changed_at | datetime }})<br>
+                    {% endfor %}
+                {% else %}
+                    —
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="total-sum">
+    Общая сумма оплаченных услуг: {{ total_sum }} руб.
+</div>
+{% else %}
+<div class="empty-state">
+    <p>У пользователя нет записей.</p>
+</div>
+{% endif %}
+
+<div style="margin-top: 30px; text-align: center;">
+    <a href="{{ url_for('users_list') }}" class="btn btn-primary">← Назад к списку пользователей</a>
+</div>
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Управление услугами{% endblock %}
+
+{% block header %}Управление услугами{% endblock %}
+
+{% block extra_css %}
+<style>
+    .service-item {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s;
+    }
+    
+    .service-item:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .service-info {
+        flex: 1;
+    }
+    
+    .service-info h3 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .service-info p {
+        margin: 5px 0;
+        color: #666;
+    }
+    
+    .price-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #28a745;
+        color: white;
+        border-radius: 20px;
+        font-size: 14px;
+        font-weight: bold;
+    }
+    
+    .inactive-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        background: #6c757d;
+        color: white;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+    
+    .service-actions {
+        display: flex;
+        gap: 10px;
+    }
+    
+    .add-button {
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<a href="{{ url_for('service_add') }}" class="btn btn-success add-button">➕ Добавить услугу</a>
+
+{% for s in services %}
+<div class="service-item">
+    <div class="service-info">
+        <h3>
+            {{ s.name }}
+            {% if not s.is_active %}
+                <span class="inactive-badge">неактивна</span>
+            {% endif %}
+        </h3>
+        <p>{{ s.description or 'Нет описания' }}</p>
+        <p>
+            {% if s.price_per_tire %}
+                Цена за шину: <span class="price-badge">{{ s.price_per_tire }} руб.</span>
+            {% endif %}
+            {% if s.price_fixed %}
+                Фиксированная цена: <span class="price-badge">{{ s.price_fixed }} руб.</span>
+            {% endif %}
+        </p>
+        <p style="font-size: 12px; color: #999;">Порядок: {{ s.sort_order }}</p>
+    </div>
+    <div class="service-actions">
+        <a href="{{ url_for('service_edit', service_id=s.id) }}" class="btn btn-primary">✏️</a>
+        <a href="{{ url_for('service_delete', service_id=s.id) }}" 
+           class="btn btn-danger"
+           onclick="return confirm('Удалить услугу? Это действие нельзя отменить.')">🗑️</a>
+    </div>
+</div>
+{% else %}
+<p style="text-align: center; color: #666; padding: 40px;">Нет добавленных услуг</p>
+{% endfor %}
+{% endblock %}

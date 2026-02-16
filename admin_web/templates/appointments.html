@@ -1,0 +1,318 @@
+{% extends "base.html" %}
+
+{% block title %}Записи на шиномонтаж{% endblock %}
+
+{% block header %}Все записи{% endblock %}
+
+{% block extra_css %}
+<style>
+    .filters {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .filters form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: flex-end;
+    }
+    
+    .filters .form-group {
+        flex: 1 1 200px;
+        margin-bottom: 0;
+    }
+    
+    .filters .form-group label {
+        font-size: 0.9em;
+        color: #666;
+        margin-bottom: 5px;
+        display: block;
+    }
+    
+    .filters .btn-group {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .export-btn {
+        margin-bottom: 20px;
+        text-align: right;
+    }
+    
+    .export-btn a {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #28a745;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    
+    .export-btn a:hover {
+        background: #218838;
+    }
+    
+    .appointments-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .appointments-table th {
+        background: #007bff;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    .appointments-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .appointments-table tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .status-pending {
+        color: #ffc107;
+        font-weight: bold;
+    }
+    
+    .status-confirmed {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .status-completed {
+        color: #17a2b8;
+        font-weight: bold;
+    }
+    
+    .status-cancelled {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .actions {
+        white-space: nowrap;
+    }
+    
+    .actions a {
+        margin: 0 3px;
+        padding: 5px 8px;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 14px;
+        display: inline-block;
+    }
+    
+    .actions a:hover {
+        opacity: 0.8;
+    }
+    
+    .btn-confirm {
+        background: #28a745;
+        color: white;
+    }
+    
+    .btn-complete {
+        background: #17a2b8;
+        color: white;
+    }
+    
+    .btn-cancel {
+        background: #ffc107;
+        color: #333;
+    }
+    
+    .btn-delete {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .user-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .user-link:hover {
+        text-decoration: underline;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-top: 30px;
+    }
+    
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .reset-link {
+        background: #6c757d;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        border-radius: 5px;
+        display: inline-block;
+    }
+    
+    .reset-link:hover {
+        background: #5a6268;
+    }
+    
+    @media (max-width: 768px) {
+        .filters form {
+            flex-direction: column;
+        }
+        
+        .filters .form-group {
+            width: 100%;
+        }
+        
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="filters">
+    <form method="get">
+        <div class="form-group">
+            <label>Дата с:</label>
+            <input type="date" name="date_from" value="{{ filters.date_from }}" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Дата по:</label>
+            <input type="date" name="date_to" value="{{ filters.date_to }}" class="form-control">
+        </div>
+        
+        <div class="form-group">
+            <label>Статус:</label>
+            <select name="status" class="form-control">
+                <option value="">Все статусы</option>
+                {% for s in statuses %}
+                <option value="{{ s }}" {% if filters.status == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Услуга:</label>
+            <select name="service" class="form-control">
+                <option value="">Все услуги</option>
+                {% for s in services %}
+                <option value="{{ s }}" {% if filters.service == s %}selected{% endif %}>{{ s }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Пользователь:</label>
+            <input type="text" name="user" value="{{ filters.user }}" class="form-control" placeholder="Имя, телефон или username">
+        </div>
+        
+        <div class="btn-group">
+            <button type="submit" class="btn btn-primary">🔍 Применить фильтры</button>
+            <a href="{{ url_for('appointments') }}" class="reset-link">✕ Сбросить</a>
+        </div>
+    </form>
+</div>
+
+<div class="export-btn">
+    <a href="{{ url_for('export_appointments') }}">📥 Экспорт в CSV</a>
+</div>
+
+{% if appointments %}
+<table class="appointments-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Клиент</th>
+            <th>Телефон</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+            <th>Авто</th>
+            <th>Радиус</th>
+            <th>Дата и время</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in appointments %}
+        <tr>
+            <td>{{ app.id }}</td>
+            <td>
+                {% if app.user_id %}
+                    <a href="{{ url_for('user_detail', user_id=app.user_id) }}" class="user-link">
+                        {{ app.full_name or app.username or 'Неизвестно' }}
+                    </a>
+                {% else %}
+                    {{ app.full_name or app.username or 'Неизвестно' }}
+                {% endif %}
+            </td>
+            <td>{{ app.phone or '—' }}</td>
+            <td>{{ app.service_name }}</td>
+            <td>{{ app.final_price }} руб.</td>
+            <td>{{ app.vehicle_type or '—' }}</td>
+            <td>{{ app.tire_diameter or '—' }}"</td>
+            <td>{{ app.appointment_time | datetime }}</td>
+            <td class="status-{{ app.status }}">{{ app.status }}</td>
+            <td class="actions">
+                {% if app.status != 'confirmed' %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='confirmed', **request.args) }}" 
+                       class="btn-confirm" 
+                       onclick="return confirm('Подтвердить запись?')">✅ Подтвердить</a>
+                {% endif %}
+                
+                {% if app.status == 'confirmed' %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='completed', **request.args) }}" 
+                       class="btn-complete" 
+                       onclick="return confirm('Отметить как выполненное?')">✔️ Выполнено</a>
+                {% endif %}
+                
+                {% if app.status not in ['completed', 'cancelled'] %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='cancelled', **request.args) }}" 
+                       class="btn-cancel" 
+                       onclick="return confirm('Отменить запись?')">❌ Отменить</a>
+                {% endif %}
+                
+                <a href="{{ url_for('delete_appointment', appointment_id=app.id, **request.args) }}" 
+                   class="btn-delete" 
+                   onclick="return confirm('Удалить запись безвозвратно?')">🗑️ Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <h3>Нет записей</h3>
+    <p>В базе данных нет записей, удовлетворяющих условиям фильтра.</p>
+    <a href="{{ url_for('appointments') }}" class="btn btn-primary" style="margin-top: 20px;">Сбросить фильтры</a>
+</div>
+{% endif %}
+{% endblock %}

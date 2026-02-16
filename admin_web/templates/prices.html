@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Стоимость услуг{% endblock %}
+
+{% block header %}Стоимость услуг{% endblock %}
+
+{% block extra_css %}
+<style>
+    .price-list {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .price-item {
+        background: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.3s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .price-item:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .service-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+    
+    .service-price {
+        font-size: 24px;
+        font-weight: bold;
+        color: #28a745;
+    }
+    
+    .price-per-tire {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="price-list">
+    {% if services %}
+        {% for s in services %}
+        <div class="price-item">
+            <div>
+                <div class="service-name">{{ s.name }}</div>
+                {% if s.price_fixed %}
+                    <div class="price-per-tire">Фиксированная цена за работу</div>
+                {% elif s.price_per_tire %}
+                    <div class="price-per-tire">Цена за одну шину</div>
+                {% endif %}
+            </div>
+            <div>
+                {% if s.price_fixed %}
+                    <span class="service-price">{{ s.price_fixed }} ₽</span>
+                {% elif s.price_per_tire %}
+                    <span class="service-price">{{ s.price_per_tire }} ₽/шина</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <h3>Нет активных услуг</h3>
+            <p>В данный момент нет доступных услуг.</p>
+            <a href="{{ url_for('services_list') }}" class="btn btn-primary" style="margin-top: 20px;">Управление услугами</a>
+        </div>
+    {% endif %}
+    
+    <div style="margin-top: 30px; text-align: center;">
+        <a href="{{ url_for('services_list') }}" class="btn btn-primary">✏️ Управление услугами</a>
+        <a href="{{ url_for('index') }}" class="btn btn-warning" style="margin-left: 10px;">← На главную</a>
+    </div>
+</div>
+{% endblock %}

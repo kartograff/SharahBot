@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Редактирование' if service else 'Добавление' }} услуги{% endblock %}
+
+{% block header %}{{ 'Редактирование услуги' if service else 'Добавление новой услуги' }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .edit-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 20px 0;
+    }
+    
+    .checkbox-group input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 30px;
+    }
+    
+    .price-hint {
+        color: #666;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<form method="post" class="edit-form">
+    <div class="form-group">
+        <label for="name">Название услуги *</label>
+        <input type="text" id="name" name="name" value="{{ service.name if service else '' }}" 
+               required class="form-control" placeholder="Например: Ремонт колеса">
+    </div>
+    
+    <div class="form-group">
+        <label for="description">Описание</label>
+        <textarea id="description" name="description" class="form-control" 
+                  rows="3" placeholder="Краткое описание услуги">{{ service.description if service else '' }}</textarea>
+    </div>
+    
+    <div class="form-group">
+        <label for="price_per_tire">Цена за одну шину (руб)</label>
+        <input type="number" id="price_per_tire" name="price_per_tire" 
+               value="{{ service.price_per_tire if service else '' }}" 
+               class="form-control" placeholder="Оставьте пустым, если цена фиксированная">
+        <div class="price-hint">Заполните, если услуга оплачивается за каждую шину</div>
+    </div>
+    
+    <div class="form-group">
+        <label for="price_fixed">Фиксированная цена (руб)</label>
+        <input type="number" id="price_fixed" name="price_fixed" 
+               value="{{ service.price_fixed if service else '' }}" 
+               class="form-control" placeholder="Оставьте пустым, если цена за шину">
+        <div class="price-hint">Заполните, если услуга имеет фиксированную стоимость</div>
+    </div>
+    
+    <div class="form-group">
+        <label for="sort_order">Порядок сортировки</label>
+        <input type="number" id="sort_order" name="sort_order" 
+               value="{{ service.sort_order if service else '' }}" 
+               class="form-control" placeholder="Меньше число = выше в списке">
+    </div>
+    
+    {% if service %}
+    <div class="checkbox-group">
+        <input type="checkbox" id="is_active" name="is_active" {% if service.is_active %}checked{% endif %}>
+        <label for="is_active">Услуга активна (отображается в боте)</label>
+    </div>
+    {% endif %}
+    
+    <div class="form-actions">
+        <a href="{{ url_for('services_list') }}" class="btn btn-warning">Отмена</a>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </div>
+</form>
+{% endblock %}

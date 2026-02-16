@@ -1,0 +1,99 @@
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-section {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.settings-section h2 {
+    margin: 0 0 20px 0;
+    color: #333;
+    font-size: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.settings-section h3 {
+    margin: 20px 0 15px 0;
+    color: #555;
+    font-size: 18px;
+}
+
+.admin-list {
+    margin: 20px 0;
+    border: 1px solid #f0f0f0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.admin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #f0f0f0;
+    background: white;
+}
+
+.admin-item:last-child {
+    border-bottom: none;
+}
+
+.admin-item:hover {
+    background: #f8f9fa;
+}
+
+.admin-info {
+    flex: 1;
+}
+
+.admin-info strong {
+    display: block;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.admin-info small {
+    color: #666;
+    display: block;
+    margin-bottom: 3px;
+}
+
+.admin-info .admin-id {
+    color: #999;
+    font-size: 12px;
+}
+
+.admin-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.admin-actions .btn {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.add-admin-form {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+}
+
+.add-admin-form .form-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.add-admin-form .form-group {
+    flex: 1;
+    margin-bottom: 0;
+}

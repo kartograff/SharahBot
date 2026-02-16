@@ -1,0 +1,19 @@
+# Виртуальное окружение
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Файлы с секретами
+.env
+config.py  # если храните токен в config.py
+*.token
+
+# Файлы IDE
+.vscode/
+.idea/
+
+# Логи и базы данных
+*.log
+*.db
+*.sqlite3

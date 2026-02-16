@@ -1,0 +1,505 @@
+/* Основные стили для всего сайта */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+h1 {
+    color: #333;
+    font-size: 28px;
+    margin: 0;
+}
+
+.settings-btn {
+    font-size: 24px;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    background: #f8f9fa;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.settings-btn:hover {
+    background: #007bff;
+    color: white;
+}
+
+.back-link {
+    margin-bottom: 20px;
+}
+
+.back-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.back-link a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-warning {
+    background: #ffc107;
+    color: #333;
+}
+
+.btn-warning:hover {
+    background: #e0a800;
+}
+
+/* Стили для таблиц */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+tr:hover {
+    background: #f8f9fa;
+}
+
+/* Статусы */
+.status-pending {
+    color: #ffc107;
+    font-weight: bold;
+}
+
+.status-confirmed {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.status-completed {
+    color: #17a2b8;
+    font-weight: bold;
+}
+
+.status-cancelled {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+}
+
+/* Уведомления */
+.alert {
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-warning {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Карточки статистики */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.stat-card .value {
+    font-size: 32px;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 5px;
+}
+
+.stat-card .label {
+    color: #666;
+    font-size: 14px;
+}
+
+/* Стили для главной страницы */
+.dashboard {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.left-panel {
+    width: 250px;
+    flex-shrink: 0;
+}
+
+.right-panel {
+    flex: 1;
+    min-width: 0;
+}
+
+.menu-section {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.menu-section h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 8px;
+}
+
+.menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-items li {
+    margin-bottom: 8px;
+}
+
+.menu-items a {
+    display: block;
+    padding: 10px 12px;
+    background: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 14px;
+}
+
+.menu-items a:hover {
+    background: #007bff;
+    color: white;
+}
+
+.stats-section {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.stats-section h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    border-bottom: 2px solid #28a745;
+    padding-bottom: 8px;
+}
+
+.stats-chart {
+    width: 100%;
+    height: 200px;
+}
+
+.stats-chart img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.month-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.month-nav a {
+    background: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+}
+
+.month-nav a:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.month-nav span {
+    padding: 5px 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.calendar-table th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    padding: 8px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.calendar-table td {
+    border: 1px solid #f0f0f0;
+    padding: 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.calendar-table td a {
+    display: block;
+    padding: 4px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.calendar-table td a:hover {
+    background: #007bff;
+    color: white;
+}
+
+.calendar-table .booked {
+    background: #cce5ff;
+}
+
+.calendar-table .booked a {
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.calendar-table .today {
+    background: #ffc107;
+}
+
+.calendar-table .today a {
+    color: #333;
+    font-weight: 600;
+}
+
+.calendar-note {
+    margin-top: 8px;
+    color: #666;
+    font-size: 12px;
+    text-align: right;
+}
+
+.today-appointments {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.today-appointments h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    border-bottom: 2px solid #17a2b8;
+    padding-bottom: 8px;
+}
+
+.today-appointments ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.today-appointments li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.today-appointments li:last-child {
+    border-bottom: none;
+}
+
+.today-appointments .time {
+    font-weight: 600;
+    color: #17a2b8;
+}
+
+.today-appointments .user-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.today-appointments .user-link:hover {
+    text-decoration: underline;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .dashboard {
+        flex-direction: column;
+    }
+    
+    .left-panel {
+        width: 100%;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Пользователи{% endblock %}
+
+{% block header %}Список пользователей{% endblock %}
+
+{% block extra_css %}
+<style>
+    .banned {
+        background-color: #fff3cd;
+    }
+    
+    .banned .status {
+        color: #dc3545;
+        font-weight: bold;
+    }
+    
+    .user-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .user-link:hover {
+        text-decoration: underline;
+    }
+    
+    .ban-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 3px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .ban-btn.ban {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .ban-btn.unban {
+        background: #28a745;
+        color: white;
+    }
+    
+    .ban-btn:hover {
+        opacity: 0.8;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-top: 30px;
+    }
+    
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if users %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Имя</th>
+            <th>Телефон</th>
+            <th>Дата регистрации</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in users %}
+        <tr class="{% if u.is_banned %}banned{% endif %}">
+            <td>{{ u.user_id }}</td>
+            <td>@{{ u.username or '—' }}</td>
+            <td>
+                <a href="{{ url_for('user_detail', user_id=u.user_id) }}" class="user-link">
+                    {{ u.full_name or 'Неизвестно' }}
+                </a>
+            </td>
+            <td>{{ u.phone or '—' }}</td>
+            <td>{{ u.registered_at | datetime }}</td>
+            <td class="status">
+                {% if u.is_banned %}
+                    <span style="color: #dc3545;">Забанен</span>
+                {% else %}
+                    <span style="color: #28a745;">Активен</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if u.is_banned %}
+                    <a href="{{ url_for('unban_user_route', user_id=u.user_id) }}" 
+                       class="ban-btn unban"
+                       onclick="return confirm('Разбанить пользователя?')">Разбанить</a>
+                {% else %}
+                    <a href="{{ url_for('ban_user_route', user_id=u.user_id) }}" 
+                       class="ban-btn ban"
+                       onclick="return confirm('Забанить пользователя?')">Забанить</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <h3>Нет пользователей</h3>
+    <p>В базе данных пока нет зарегистрированных пользователей.</p>
+    <p>Пользователи появятся здесь после того, как кто-то напишет боту команду /start.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 20px;">На главную</a>
+</div>
+{% endif %}
+{% endblock %}

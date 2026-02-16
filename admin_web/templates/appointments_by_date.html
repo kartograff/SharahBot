@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Записи на {{ date }}{% endblock %}
+
+{% block header %}Записи на {{ date }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .date-header {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+    
+    .date-header h2 {
+        margin: 0 0 10px 0;
+        color: #333;
+    }
+    
+    .date-header p {
+        margin: 0;
+        color: #666;
+    }
+    
+    .actions {
+        white-space: nowrap;
+    }
+    
+    .actions a {
+        margin: 0 3px;
+        padding: 5px 8px;
+        border-radius: 3px;
+        text-decoration: none;
+        font-size: 12px;
+    }
+    
+    .actions a:hover {
+        opacity: 0.8;
+    }
+    
+    .user-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .user-link:hover {
+        text-decoration: underline;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 50px;
+        color: #666;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    
+    .empty-state h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="date-header">
+    <h2>{{ date }}</h2>
+    <p>Всего записей: {{ appointments|length }}</p>
+</div>
+
+{% if appointments %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Клиент</th>
+            <th>Телефон</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+            <th>Авто</th>
+            <th>Радиус</th>
+            <th>Время</th>
+            <th>Статус</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for app in appointments %}
+        <tr>
+            <td>{{ app.id }}</td>
+            <td>
+                {% if app.user_id %}
+                    <a href="{{ url_for('user_detail', user_id=app.user_id) }}" class="user-link">
+                        {{ app.full_name or app.username or 'Неизвестно' }}
+                    </a>
+                {% else %}
+                    {{ app.full_name or app.username or 'Неизвестно' }}
+                {% endif %}
+            </td>
+            <td>{{ app.phone or '—' }}</td>
+            <td>{{ app.service_name }}</td>
+            <td>{{ app.final_price }} руб.</td>
+            <td>{{ app.vehicle_type or '—' }}</td>
+            <td>{{ app.tire_diameter or '—' }}"</td>
+            <td>{{ app.appointment_time | datetime }}</td>
+            <td class="status-{{ app.status }}">{{ app.status }}</td>
+            <td class="actions">
+                {% if app.status != 'confirmed' %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='confirmed', date=date) }}" 
+                       class="btn btn-success" 
+                       onclick="return confirm('Подтвердить запись?')">✅</a>
+                {% endif %}
+                
+                {% if app.status != 'completed' %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='completed', date=date) }}" 
+                       class="btn btn-primary" 
+                       onclick="return confirm('Отметить как выполненное?')">✔️</a>
+                {% endif %}
+                
+                {% if app.status != 'cancelled' %}
+                    <a href="{{ url_for('change_status', appointment_id=app.id, new_status='cancelled', date=date) }}" 
+                       class="btn btn-warning" 
+                       onclick="return confirm('Отменить запись?')">❌</a>
+                {% endif %}
+                
+                <a href="{{ url_for('delete_appointment', appointment_id=app.id, date=date) }}" 
+                   class="btn btn-danger" 
+                   onclick="return confirm('Удалить запись безвозвратно?')">🗑️</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <h3>Нет записей на эту дату</h3>
+    <p>На {{ date }} нет ни одной записи.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-primary" style="margin-top: 20px;">Вернуться к календарю</a>
+</div>
+{% endif %}
+
+
+</div>
+{% endblock %}

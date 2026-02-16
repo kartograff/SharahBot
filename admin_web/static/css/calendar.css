@@ -1,0 +1,187 @@
+.calendar-container {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-header h2 {
+    margin: 0;
+    color: #333;
+    font-size: 20px;
+}
+
+.month-nav {
+    display: flex;
+    gap: 8px;
+}
+
+.month-nav a {
+    background: #f8f9fa;
+    color: #333;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 14px;
+    border: 1px solid #e0e0e0;
+}
+
+.month-nav a:hover {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.month-nav span {
+    padding: 5px 12px;
+    font-weight: bold;
+    color: #333;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.calendar-table th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    padding: 8px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.calendar-table td {
+    border: 1px solid #f0f0f0;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.calendar-table td a {
+    display: block;
+    padding: 4px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+    font-size: 13px;
+}
+
+.calendar-table td a:hover {
+    background: #007bff;
+    color: white;
+}
+
+.calendar-table .booked {
+    background: #cce5ff;
+}
+
+.calendar-table .booked a {
+    color: #0056b3;
+    font-weight: 600;
+}
+
+.calendar-table .today {
+    background: #ffc107;
+}
+
+.calendar-table .today a {
+    color: #333;
+    font-weight: 600;
+}
+
+.calendar-note {
+    margin-top: 10px;
+    color: #666;
+    font-size: 12px;
+    text-align: right;
+}
+
+.today-appointments {
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.today-appointments h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 16px;
+    border-bottom: 2px solid #17a2b8;
+    padding-bottom: 8px;
+}
+
+.today-appointments ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.today-appointments li {
+    padding: 8px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+}
+
+.today-appointments li:last-child {
+    border-bottom: none;
+}
+
+.today-appointments .time {
+    font-weight: 600;
+    color: #17a2b8;
+}
+
+.today-appointments .user-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.today-appointments .user-link:hover {
+    text-decoration: underline;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .calendar-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+    
+    .calendar-table th,
+    .calendar-table td {
+        padding: 5px;
+        font-size: 12px;
+    }
+    
+    .month-nav {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

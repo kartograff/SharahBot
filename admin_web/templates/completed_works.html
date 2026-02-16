@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Архив выполненных работ{% endblock %}
+
+{% block header %}Архив выполненных работ{% endblock %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Клиент</th>
+            <th>Телефон</th>
+            <th>Услуга</th>
+            <th>Цена</th>
+            <th>Авто</th>
+            <th>Радиус</th>
+            <th>Дата записи</th>
+            <th>Дата выполнения</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for w in works %}
+        <tr>
+            <td>{{ w.id }}</td>
+            <td>
+                <a href="{{ url_for('user_detail', user_id=w.user_id) }}" class="user-link">
+                    {{ w.full_name or w.username or 'Неизвестно' }}
+                </a>
+            </td>
+            <td>{{ w.phone or '—' }}</td>
+            <td>{{ w.service_name }}</td>
+            <td>{{ w.final_price }} руб.</td>
+            <td>{{ w.vehicle_type or '—' }}</td>
+            <td>{{ w.tire_diameter or '—' }}"</td>
+            <td>{{ w.appointment_time | datetime }}</td>
+            <td>{{ w.completed_at | datetime }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="9" style="text-align: center; padding: 30px;">
+                Нет выполненных работ
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

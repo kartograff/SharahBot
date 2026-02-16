@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Рассылка сообщений{% endblock %}
+
+{% block header %}Рассылка сообщений{% endblock %}
+
+{% block extra_css %}
+<style>
+    .broadcast-form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .broadcast-form textarea {
+        width: 100%;
+        height: 200px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 16px;
+        margin: 20px 0;
+        resize: vertical;
+    }
+    
+    .broadcast-form textarea:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    }
+    
+    .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #856404;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .warning-box h3 {
+        margin: 0 0 10px 0;
+        color: #856404;
+    }
+    
+    .warning-box p {
+        margin: 0;
+        line-height: 1.6;
+    }
+    
+    .datetime-picker {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+    
+    .datetime-picker .form-group {
+        flex: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="broadcast-form">
+    <div class="warning-box">
+        <h3>⚠️ Внимание!</h3>
+        <p>
+            Сообщение будет отправлено ВСЕМ пользователям бота. 
+            Пожалуйста, проверьте текст перед отправкой и не злоупотребляйте 
+            частыми рассылками, чтобы не беспокоить клиентов.
+        </p>
+    </div>
+    
+    <form method="post">
+        <div class="datetime-picker">
+            <div class="form-group">
+                <label for="send_date">Дата отправки:</label>
+                <input type="date" id="send_date" name="send_date" class="form-control" 
+                       value="{{ now.strftime('%Y-%m-%d') }}" required>
+            </div>
+            <div class="form-group">
+                <label for="send_time">Время отправки:</label>
+                <input type="time" id="send_time" name="send_time" class="form-control" 
+                       value="{{ now.strftime('%H:%M') }}" required>
+            </div>
+        </div>
+        
+        <textarea name="message" placeholder="Введите текст сообщения..." required></textarea>
+        
+        <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <a href="{{ url_for('index') }}" class="btn btn-warning">Отмена</a>
+            <button type="submit" class="btn btn-success" 
+                    onclick="return confirm('Запланировать рассылку на указанное время?')">
+                📅 Запланировать
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

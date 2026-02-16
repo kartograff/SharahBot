@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+<style>
+    .dashboard {
+        display: flex;
+        gap: 30px;
+        margin-top: 20px;
+    }
+    
+    .left-panel {
+        width: 250px;
+        flex-shrink: 0;
+    }
+    
+    .right-panel {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .menu-section {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .menu-section h3 {
+        margin: 0 0 15px 0;
+        color: #333;
+        font-size: 16px;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 8px;
+    }
+    
+    .menu-items {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .menu-items li {
+        margin-bottom: 8px;
+    }
+    
+    .menu-items a {
+        display: block;
+        padding: 10px 12px;
+        background: #f8f9fa;
+        color: #333;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+    }
+    
+    .menu-items a:hover {
+        background: #007bff;
+        color: white;
+    }
+    
+    .stats-section {
+        background: white;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .stats-section h3 {
+        margin: 0 0 15px 0;
+        color: #333;
+        font-size: 16px;
+        border-bottom: 2px solid #28a745;
+        padding-bottom: 8px;
+    }
+    
+    .stats-chart {
+        width: 100%;
+        height: 200px;
+    }
+    
+    .stats-chart img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+    
+    .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .calendar-header h2 {
+        margin: 0;
+        color: #333;
+        font-size: 18px;
+    }
+    
+    .month-nav {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .month-nav a {
+        background: #f8f9fa;
+        color: #333;
+        text-decoration: none;
+        padding: 5px 12px;
+        border-radius: 5px;
+        transition: all 0.3s;
+        font-size: 14px;
+        border: 1px solid #e0e0e0;
+    }
+    
+    .month-nav a:hover {
+        background: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+    
+    .month-nav span {
+        padding: 5px 12px;
+        font-weight: bold;
+        color: #333;
+    }
+    
+    .calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .calendar-table th {
+        background: #f8f9fa;
+        color: #333;
+        font-weight: 600;
+        padding: 8px;
+        text-align: center;
+        font-size: 13px;
+    }
+    
+    .calendar-table td {
+        border: 1px solid #f0f0f0;
+        padding: 6px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    
+    .calendar-table td a {
+        display: block;
+        padding: 4px;
+        color: #333;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: all 0.2s;
+        font-size: 13px;
+    }
+    
+    .calendar-table td a:hover {
+        background: #007bff;
+        color: white;
+    }
+    
+    .calendar-table .booked {
+        background: #cce5ff;
+    }
+    
+    .calendar-table .booked a {
+        color: #0056b3;
+        font-weight: 600;
+    }
+    
+    .calendar-table .today {
+        background: #ffc107;
+    }
+    
+    .calendar-table .today a {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    .calendar-note {
+        margin-top: 8px;
+        color: #666;
+        font-size: 12px;
+        text-align: right;
+    }
+    
+    .today-appointments {
+        margin-top: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .today-appointments h3 {
+        margin: 0 0 15px 0;
+        color: #333;
+        font-size: 16px;
+        border-bottom: 2px solid #17a2b8;
+        padding-bottom: 8px;
+    }
+    
+    .today-appointments ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    
+    .today-appointments li {
+        padding: 8px 10px;
+        border-bottom: 1px solid #f0f0f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+    }
+    
+    .today-appointments li:last-child {
+        border-bottom: none;
+    }
+    
+    .today-appointments .time {
+        font-weight: 600;
+        color: #17a2b8;
+    }
+    
+    .today-appointments .user-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+    
+    .today-appointments .user-link:hover {
+        text-decoration: underline;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+        font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard {
+            flex-direction: column;
+        }
+        
+        .left-panel {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block header %}Панель управления шиномонтажем "Шараш-монтаж"{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Левая панель с меню и статистикой -->
+    <div class="left-panel">
+        <div class="menu-section">
+            <h3>Навигация</h3>
+            <ul class="menu-items">
+                <li><a href="{{ url_for('appointments') }}">📅 Просмотр записей</a></li>
+                <li><a href="{{ url_for('prices') }}">💰 Стоимость услуг</a></li>
+                <li><a href="{{ url_for('services_list') }}">⚙️ Управление услугами</a></li>
+                <li><a href="{{ url_for('users_list') }}">👥 Пользователи</a></li>
+                <li><a href="{{ url_for('completed_works') }}">📦 Выполненные работы</a></li>
+                <li><a href="{{ url_for('broadcast') }}">📢 Рассылка</a></li>
+                <li><a href="{{ url_for('statistics') }}">📊 Статистика</a></li>
+            </ul>
+        </div>
+        
+        <div class="stats-section">
+            <h3>Быстрая статистика</h3>
+            {% if stats_plot %}
+                <div class="stats-chart">
+                    <img src="data:image/png;base64,{{ stats_plot }}" alt="Статистика за 7 дней">
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>Нет данных для отображения</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Правая панель с календарём -->
+    <div class="right-panel">
+        <div class="calendar-header">
+            <h2>Календарь записей</h2>
+            <div class="month-nav">
+                <a href="?month={{ month-1 if month > 1 else 12 }}&year={{ year if month > 1 else year-1 }}">←</a>
+                <span>{{ month_names[month-1] }} {{ year }}</span>
+                <a href="?month={{ month+1 if month < 12 else 1 }}&year={{ year if month < 12 else year+1 }}">→</a>
+            </div>
+        </div>
+
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th>Пн</th>
+                    <th>Вт</th>
+                    <th>Ср</th>
+                    <th>Чт</th>
+                    <th>Пт</th>
+                    <th>Сб</th>
+                    <th>Вс</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for week in calendar_weeks %}
+                <tr>
+                    {% for day in week %}
+                        {% if day %}
+                            <td class="{% if day.booked %}booked{% endif %} {% if day.day == now.day and month == now.month and year == now.year %}today{% endif %}">
+                                <a href="{{ url_for('appointments_by_date', date=day.date) }}">{{ day.day }}</a>
+                            </td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <p class="calendar-note">Подсвечены дни с записями</p>
+
+        <div class="today-appointments">
+            <h3>Записи на сегодня ({{ today_str }})</h3>
+            {% if today_appointments %}
+                <ul>
+                {% for app in today_appointments %}
+                    <li>
+                        <span>
+                            <a href="{{ url_for('user_detail', user_id=app.user_id) }}" class="user-link">
+                                {{ app.full_name or app.username or 'Неизвестно' }}
+                            </a>
+                            - {{ app.service_name }}
+                        </span>
+                        <span class="time">{{ app.appointment_time | datetime }}</span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <div class="empty-state">
+                    <p>На сегодня записей нет</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

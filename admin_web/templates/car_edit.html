@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование автомобиля{% endblock %}
+
+{% block header %}Редактирование автомобиля{% endblock %}
+
+{% block content %}
+<form method="post" style="max-width: 600px; margin: 0 auto;">
+    <input type="hidden" name="car_id" value="{{ car.id }}">
+    
+    <div class="form-group">
+        <label for="brand">Марка</label>
+        <input type="text" id="brand" name="brand" value="{{ car.brand or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="model">Модель</label>
+        <input type="text" id="model" name="model" value="{{ car.model or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="year">Год выпуска</label>
+        <input type="number" id="year" name="year" value="{{ car.year or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="vin">VIN</label>
+        <input type="text" id="vin" name="vin" value="{{ car.vin or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="vehicle_type">Тип</label>
+        <select id="vehicle_type" name="vehicle_type" class="form-control">
+            <option value="car" {% if car.vehicle_type == 'car' %}selected{% endif %}>Легковой</option>
+            <option value="suv" {% if car.vehicle_type == 'suv' %}selected{% endif %}>Джип</option>
+            <option value="truck" {% if car.vehicle_type == 'truck' %}selected{% endif %}>Грузовой</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label for="tire_width">Ширина шины</label>
+        <input type="number" id="tire_width" name="tire_width" value="{{ car.tire_width or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="tire_profile">Профиль</label>
+        <input type="number" id="tire_profile" name="tire_profile" value="{{ car.tire_profile or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="tire_diameter">Диаметр (R)</label>
+        <input type="number" id="tire_diameter" name="tire_diameter" value="{{ car.tire_diameter or '' }}" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="tire_season">Сезонность</label>
+        <select id="tire_season" name="tire_season" class="form-control">
+            <option value="">—</option>
+            <option value="summer" {% if car.tire_season == 'summer' %}selected{% endif %}>Лето</option>
+            <option value="winter" {% if car.tire_season == 'winter' %}selected{% endif %}>Зима</option>
+            <option value="all-season" {% if car.tire_season == 'all-season' %}selected{% endif %}>Всесезон</option>
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label>
+            <input type="checkbox" name="is_default" {% if car.is_default %}checked{% endif %}> По умолчанию
+        </label>
+    </div>
+    
+    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <a href="{{ url_for('user_detail', user_id=car.user_id) }}" class="btn btn-warning">Отмена</a>
+        <button type="submit" class="btn btn-success">Сохранить</button>
+    </div>
+</form>
+{% endblock %}
